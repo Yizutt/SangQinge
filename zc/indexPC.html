@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>九月✨FM - 电脑版</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; 
+            transition: background 0.5s ease, color 0.5s ease; 
+            position: relative; 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            padding: 50px; 
+        }
+        
+        /* 电脑设备样式变量 */
+        body { 
+            --primary: #ff0050; 
+            --secondary: #00f2fe; 
+            --btn-hover: #e00447; 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+        }
+        
+        .card { 
+            max-width: 900px; 
+            width: 100%; 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(10px); 
+            border-radius: 24px; 
+            padding: 50px; 
+            text-align: center; 
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); 
+            position: relative; 
+            transition: all 0.5s ease; 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            animation: fadeIn 0.8s ease-out; 
+        }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        .time-tag, .day-tag { 
+            position: absolute; 
+            top: 30px; 
+            color: #fff; 
+            font-size: 16px; 
+            padding: 10px 20px; 
+            border-radius: 16px; 
+            font-weight: bold; 
+            letter-spacing: 1px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15); 
+        }
+        
+        .time-tag { left: 30px; background: var(--secondary); }
+        .day-tag { right: 30px; background: var(--primary); }
+        
+        .avatar-container { position: relative; display: inline-block; margin-bottom: 30px; }
+        
+        .avatar { 
+            width: 200px; 
+            height: 200px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 8px solid #fff; 
+            box-shadow: 0 15px 30px rgba(0,0,0,.2); 
+            animation: gentleSpin 15s linear infinite; 
+        }
+        
+        @keyframes gentleSpin { 
+            0% { transform: rotate(0); } 
+            100% { transform: rotate(360deg); } 
+        }
+        
+        .avatar-container::after { 
+            content: ''; 
+            position: absolute; 
+            top: -8px; 
+            left: -8px; 
+            right: -8px; 
+            bottom: -8px; 
+            border-radius: 50%; 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            z-index: -1; 
+            animation: pulse 2s infinite; 
+        }
+        
+        @keyframes pulse { 
+            0% { opacity: 0.5; } 
+            50% { opacity: 1; } 
+            100% { opacity: 0.5; } 
+        }
+        
+        .name { margin-top: 25px; font-size: 38px; font-weight: 800; color: #333; letter-spacing: 1px; }
+        
+        .bio { margin-top: 25px; font-size: 20px; color: #666; line-height: 1.7; padding: 0 80px; }
+        
+        .live-info { margin-top: 30px; font-size: 20px; line-height: 1.8; color: var(--primary); font-weight: 600; padding: 20px 25px; background: rgba(0,0,0,0.03); border-radius: 15px; }
+        
+        .ip { margin-top: 20px; font-size: 18px; color: #888; }
+        
+        .mission-box { margin-top: 30px; font-size: 18px; font-weight: bold; color: var(--primary); padding: 20px 25px; background: rgba(0,0,0,0.03); border-radius: 15px; min-height: 70px; display: flex; align-items: center; justify-content: center; }
+        
+        .btn-box { margin-top: 40px; display: flex; gap: 20px; justify-content: center; }
+        
+        .btn { 
+            flex: 1; 
+            max-width: 250px; 
+            color: #fff; 
+            padding: 18px 0; 
+            border-radius: 24px; 
+            font-size: 20px; 
+            font-weight: 600; 
+            text-decoration: none; 
+            transition: all .3s; 
+            background: var(--primary); 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+        }
+        
+        .btn:hover { background: var(--btn-hover); transform: translateY(-3px); box-shadow: 0 12px 25px rgba(0,0,0,0.2); }
+        .btn:active { transform: translateY(0); }
+        
+        .footer { margin-top: 40px; font-size: 16px; color: #aaa; text-align: center; padding-top: 25px; border-top: 1px solid rgba(0,0,0,0.05); }
+        
+        .testers { margin-top: 30px; font-size: 16px; color: #666; text-align: center; line-height: 1.8; }
+        
+        .testers span { display: inline-flex; align-items: center; margin: 0 15px; vertical-align: middle; cursor: pointer; padding: 8px 12px; border-radius: 20px; transition: all 0.3s; }
+        .testers span:hover { background: rgba(0,0,0,0.05); }
+        
+        .testers img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,.15); transition: transform 0.2s; margin-right: 10px; }
+        .testers img:hover { transform: scale(1.2); }
+        
+        .device-indicator { position: fixed; bottom: 40px; right: 40px; background: rgba(0,0,0,0.7); color: white; padding: 12px 25px; border-radius: 20px; font-size: 16px; z-index: 1000; backdrop-filter: blur(5px); }
+        
+        /* 内部功能面板 */
+        #internalPanel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 3000; backdrop-filter: blur(5px); }
+        
+        .panel-content { background: white; border-radius: 20px; padding: 40px; width: 90%; max-width: 700px; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: panelSlide 0.3s ease-out; }
+        
+        @keyframes panelSlide { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        
+        .panel-title { font-size: 26px; font-weight: bold; margin-bottom: 35px; color: #333; text-align: center; padding-bottom: 25px; border-bottom: 1px solid #eee; }
+        
+        .form-group { margin-bottom: 30px; text-align: left; }
+        
+        .form-group label { display: block; margin-bottom: 12px; font-weight: bold; color: #555; font-size: 18px; }
+        
+        .form-group input, .form-group textarea { width: 100%; padding: 18px 25px; border: 1px solid #ddd; border-radius: 15px; font-size: 18px; transition: all 0.3s; }
+        
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255, 0, 80, 0.1); outline: none; }
+        
+        .form-group textarea { min-height: 150px; resize: vertical; }
+        
+        .panel-btns { display: flex; gap: 20px; margin-top: 30px; }
+        
+        .panel-btn { flex: 1; padding: 18px; border: none; border-radius: 15px; font-weight: bold; cursor: pointer; transition: all 0.3s; font-size: 18px; }
+        
+        .submit-btn { background: var(--primary); color: white; }
+        .submit-btn:hover { background: var(--btn-hover); transform: translateY(-2px); }
+        
+        .close-btn { background: #eee; color: #333; }
+        .close-btn:hover { background: #ddd; transform: translateY(-2px); }
+        
+        .easter-egg-success { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: #00ff9d; padding: 18px 35px; border-radius: 25px; font-size: 18px; z-index: 2000; opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(5px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        
+        .loading { display: inline-block; width: 28px; height: 28px; border: 3px solid rgba(255,255,255,.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s ease-in-out infinite; margin-right: 10px; }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .countdown { color: var(--secondary); font-weight: normal; margin-left: 10px; }
+        
+        .token-input { font-family: monospace; font-size: 18px; }
+        
+        .fallback-data { color: #888; font-style: italic; }
+    </style>
+</head>
+<body class="pc">
+    <div class="card">
+        <div class="time-tag" id="timeTag">--:--:--</div>
+        <div class="day-tag" id="dayTag">开播第？天</div>
+        
+        <div class="avatar-container">
+            <img src="https://example.com/avatar.jpg" alt="九月✨FM" class="avatar">
+        </div>
+        
+        <h1 class="name">九月✨FM</h1>
+        <p class="bio" id="bioText">加载中...</p>
+        
+        <div class="live-info">
+            直播时间：晚上 21:30~01:30<br>
+            音乐点歌 | 聊天治愈 | 倾听树洞
+        </div>
+        
+        <p class="ip">📍IP：四川内江</p>
+        
+        <div class="mission-box" id="missionBox">加载任务中...</div>
+        
+        <div class="btn-box">
+            <a href="#" class="btn">关注</a>
+            <a href="#" class="btn">直播间</a>
+            <a href="#" class="btn">工具</a>
+        </div>
+        
+        <div class="footer">
+            本页面由"九月文化有限电台"的"限制"持续维护与更新
+        </div>
+        
+        <div class="testers">
+            测试人员：
+            <span data-index="1"><img src="https://example.com/tester1.jpg" alt="测试员1">九月✨FM</span>
+            <span data-index="3"><img src="https://example.com/tester2.jpg" alt="测试员2">CHEN</span>
+            <span data-index="2"><img src="https://example.com/tester3.jpg" alt="测试员3">限制</span>
+        </div>
+    </div>
+    
+    <div class="device-indicator">当前风格: 电脑风格</div>
+    
+    <!-- 内部功能面板 -->
+    <div id="internalPanel">
+        <div class="panel-content">
+            <h3 class="panel-title">🔒 内部管理面板</h3>
+            
+            <div class="form-group">
+                <label for="githubToken">GitHub Token</label>
+                <input type="text" id="githubToken" class="token-input" placeholder="ghp_...">
+                <small style="color: #888; font-size: 16px; margin-top: 5px; display: block;">注意：Token 需要具有 gist 权限。出于安全考虑，请勿在公共场合使用此功能。</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="newBio">修改个人简介</label>
+                <textarea id="newBio" placeholder="输入新的简介内容..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="taskName">任务名称</label>
+                <input type="text" id="taskName" placeholder="输入任务名称">
+            </div>
+            
+            <div class="form-group">
+                <label for="taskStart">开始日期 (YYYY-MM-DD)</label>
+                <input type="date" id="taskStart">
+            </div>
+            
+            <div class="form-group">
+                <label for="taskEnd">结束日期 (YYYY-MM-DD)</label>
+                <input type="date" id="taskEnd">
+            </div>
+            
+            <div class="panel-btns">
+                <button class="panel-btn submit-btn" onclick="submitInternalChanges()">提交</button>
+                <button class="panel-btn close-btn" onclick="closeInternalPanel()">关闭</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="easter-egg-success" id="easterEggSuccess">🎉 内部功能已解锁！</div>
+    
+    <script>
+        // ==============================
+        // 🔑 配置区
+        // ==============================
+        const GIST_ID = '68c68109c38cec17c7bc12617d30bb5e';
+        const GITHUB_USERNAME = 'Yizutt';
+        
+        // 备用数据，防止Gist加载失败
+        const FALLBACK_DATA = {
+            bio: "九月✨FM - 每晚21:30直播，音乐点歌、聊天治愈、倾听树洞。欢迎来到我的直播间，让我们一起分享音乐与故事！",
+            missions: [
+                { name: "收集35只爱心兔兔", start: "2025-09-28", end: "2025-10-10" }
+            ]
+        };
+        
+        // ==============================
+        // 工具函数
+        // ==============================
+        function formatCountdown(ms) {
+            if (ms <= 0) return '已结束';
+            const totalSec = Math.floor(ms / 1000);
+            const d = Math.floor(totalSec / 86400);
+            const h = Math.floor((totalSec % 86400) / 3600);
+            const m = Math.floor((totalSec % 3600) / 60);
+            const s = totalSec % 60;
+            
+            const arr = [];
+            if (d > 0) arr.push(`${d}天`);
+            if (h > 0) arr.push(`${h}时`);
+            if (m > 0) arr.push(`${m}分`);
+            arr.push(`${s}秒`);
+            
+            return arr.join('');
+        }
+        
+        // 显示消息提示
+        function showMessage(message, isError = false) {
+            const msgEl = document.getElementById('easterEggSuccess');
+            msgEl.textContent = message;
+            msgEl.style.color = isError ? '#ff6b6b' : '#00ff9d';
+            msgEl.style.opacity = '1';
+            setTimeout(() => msgEl.style.opacity = '0', 3000);
+        }
+        
+        // ==============================
+        // 加载远程数据（从 Gist）
+        // ==============================
+        async function loadMissionsFromServer() {
+            try {
+                // 尝试从多个可能的源加载数据
+                const sources = [
+                    `https://cdn.jsdelivr.net/gh/${GITHUB_USERNAME}@${GIST_ID}/jyfm-data.json?_=${Date.now()}`,
+                    `https://gist.githubusercontent.com/${GITHUB_USERNAME}/${GIST_ID}/raw/jyfm-data.json?_=${Date.now()}`,
+                    `https://api.github.com/gists/${GIST_ID}`
+                ];
+                
+                let data = null;
+                for (let source of sources) {
+                    try {
+                        const res = await fetch(source);
+                        if (!res.ok) continue;
+                        
+                        if (source.includes('api.github.com/gists')) {
+                            // GitHub API 返回的是 Gist 对象，需要提取文件内容
+                            const gistData = await res.json();
+                            data = JSON.parse(gistData.files['jyfm-data.json'].content);
+                        } else {
+                            // 直接获取文件内容
+                            data = await res.json();
+                        }
+                        
+                        if (data) break; // 如果成功获取数据，跳出循环
+                    } catch (err) {
+                        console.warn(`从 ${source} 加载数据失败:`, err);
+                    }
+                }
+                
+                // 如果所有源都失败，使用备用数据
+                if (!data) {
+                    console.log('使用备用数据');
+                    data = FALLBACK_DATA;
+                    document.getElementById('bioText').classList.add('fallback-data');
+                    document.getElementById('missionBox').classList.add('fallback-data');
+                }
+                
+                document.getElementById('bioText').textContent = data.bio || '暂无简介';
+                
+                const now = new Date();
+                let html = '';
+                (data.missions || []).forEach(task => {
+                    const start = new Date(task.start);
+                    const end = new Date(task.end);
+                    
+                    if (now >= start && now <= end) {
+                        const left = end - now;
+                        html += `<div>任务：${task.name}<span class="countdown">(剩${formatCountdown(left)})</span></div>`;
+                    }
+                });
+                
+                document.getElementById('missionBox').innerHTML = html || '暂无进行中的任务';
+            } catch (error) {
+                console.error('加载失败:', error);
+                // 使用备用数据
+                document.getElementById('bioText').textContent = FALLBACK_DATA.bio;
+                document.getElementById('bioText').classList.add('fallback-data');
+                
+                const now = new Date();
+                let html = '';
+                FALLBACK_DATA.missions.forEach(task => {
+                    const start = new Date(task.start);
+                    const end = new Date(task.end);
+                    
+                    if (now >= start && now <= end) {
+                        const left = end - now;
+                        html += `<div>任务：${task.name}<span class="countdown">(剩${formatCountdown(left)})</span></div>`;
+                    }
+                });
+                
+                document.getElementById('missionBox').innerHTML = html || '暂无进行中的任务';
+                document.getElementById('missionBox').classList.add('fallback-data');
+            }
+        }
+        
+        // ==============================
+        // 秘钥检测（1323133）
+        // ==============================
+        const SECRET = [1, 3, 2, 3, 1, 3, 3];
+        let seq = [];
+        
+        document.querySelectorAll('.testers span').forEach(el => {
+            el.addEventListener('click', () => {
+                seq.push(parseInt(el.dataset.index));
+                if (seq.length > SECRET.length) seq = seq.slice(-SECRET.length);
+                
+                if (seq.length === SECRET.length && SECRET.every((v, i) => v === seq[i])) {
+                    seq = [];
+                    document.getElementById('internalPanel').style.display = 'flex';
+                    showMessage('🎉 内部功能已解锁！');
+                }
+            });
+        });
+        
+        function closeInternalPanel() {
+            document.getElementById('internalPanel').style.display = 'none';
+            // 清除敏感信息
+            document.getElementById('githubToken').value = '';
+        }
+        
+        // ==============================
+        // 提交修改到 Gist
+        // ==============================
+        async function submitInternalChanges() {
+            const token = document.getElementById('githubToken').value.trim();
+            const bio = document.getElementById('newBio').value.trim();
+            const name = document.getElementById('taskName').value.trim();
+            const start = document.getElementById('taskStart').value;
+            const end = document.getElementById('taskEnd').value;
+            
+            // 验证 Token
+            if (!token) {
+                showMessage('❌ 请输入 GitHub Token', true);
+                return;
+            }
+            
+            // 验证至少填写一项内容
+            if (!bio && !(name && start && end)) {
+                showMessage('❌ 请至少填写一项内容！', true);
+                return;
+            }
+            
+            try {
+                // 验证 Token 是否有效
+                const gistRes = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
+                    headers: {
+                        Authorization: `token ${token}`
+                    }
+                });
+                
+                if (!gistRes.ok) throw new Error('Token 无效或无权限');
+                
+                const gist = await gistRes.json();
+                const current = JSON.parse(gist.files['jyfm-data.json'].content);
+                
+                // 更新数据
+                if (bio) current.bio = bio;
+                
+                if (name && start && end) {
+                    const s = new Date(start), e = new Date(end);
+                    if (s > e) {
+                        showMessage('❌ 开始日期不能晚于结束日期！', true);
+                        return;
+                    }
+                    
+                    current.missions = current.missions || [];
+                    current.missions.push({ name, start, end });
+                }
+                
+                // 保存到 Gist
+                const saveRes = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
+                    method: 'PATCH',
+                    headers: {
+                        Authorization: `token ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        files: {
+                            'jyfm-data.json': {
+                                content: JSON.stringify(current, null, 2)
+                            }
+                        }
+                    })
+                });
+                
+                if (saveRes.ok) {
+                    showMessage('✅ 更新成功！刷新页面查看效果。');
+                    closeInternalPanel();
+                    loadMissionsFromServer(); // 重新加载数据
+                } else {
+                    throw new Error('保存失败');
+                }
+            } catch (err) {
+                console.error(err);
+                showMessage('❌ 操作失败：' + err.message, true);
+            }
+        }
+        
+        // ==============================
+        // 初始化
+        // ==============================
+        function updateTime() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('timeTag').textContent = `${h}:${m}:${s}`;
+        }
+        
+        function updateDayTag() {
+            const start = new Date('2025-09-21T00:00:00');
+            const now = new Date();
+            const el = document.getElementById('dayTag');
+            el.textContent = now < start ? '即将开播' : `开播第${Math.floor((now - start) / 86400000) + 1}天`;
+        }
+        
+        // 启动
+        updateTime();
+        updateDayTag();
+        loadMissionsFromServer();
+        
+        setInterval(updateTime, 1000);
+        setInterval(updateDayTag, 60000);
+    </script>
+</body>
+</html>

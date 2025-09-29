@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>九月✨FM</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- 优化CSS加载 -->
+  <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="style.css"></noscript>
+</head>
+<body>
+  <!-- 音乐控制面板 -->
+  <div class="music-panel" id="musicPanel">
+    <div class="music-control" id="musicControl">
+      <svg class="play-icon" viewBox="0 0 24 24">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+      <svg class="pause-icon" viewBox="0 0 24 24">
+        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+      </svg>
+    </div>
+    
+    <div class="music-info" id="musicInfo">
+      <div class="music-wave">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <span class="music-title">正在加载...</span>
+    </div>
+    
+    <div class="volume-control">
+      <input type="range" id="volumeSlider" min="0" max="100" value="5" class="volume-slider">
+      <span class="volume-value">5%</span>
+    </div>
+    
+    <div class="music-list-toggle" id="musicListToggle">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+      </svg>
+    </div>
+  </div>
+  
+  <!-- 音乐列表 -->
+  <div class="music-list" id="musicList">
+    <div class="music-list-header">
+      <h3>播放列表</h3>
+      <button class="close-list" id="closeList">×</button>
+    </div>
+    <ul class="music-items" id="musicItems">
+      <!-- 音乐列表将通过JS动态生成 -->
+    </ul>
+  </div>
+  
+  <!-- 主内容卡片 -->
+  <div class="card">
+    <div class="time-tag" id="timeTag">--:--:--</div>
+    <div class="day-tag" id="dayTag">开播第？天</div>
+    <!-- 优化图片加载 -->
+    <img src="https://s21.ax1x.com/2025/09/28/pVoEhWD.jpg" alt="头像" class="avatar" 
+         loading="lazy" decoding="async">
+    <div class="name">九月✨FM</div>
+    <div class="bio">
+      我们生下来是需要去感受这个世界的，要去看花开，去听流水，去遇见一些有趣的朋友，去懂一些道理。
+    </div>
+    <div class="live-info">
+      直播时间：晚上 21:30~01:30<br>
+      音乐点歌 | 聊天治愈 | 倾听树洞
+    </div>
+    <div class="ip">📍IP：四川内江</div>
+
+    <div class="mission-box" id="missionBox"></div>
+
+    <div class="btn-box">
+      <a class="btn" href="https://v.douyin.com/XmqD7uEcg6c/" target="_blank">关注</a>
+      <a class="btn" href="https://v.douyin.com/OOFiHbUxKs0/" target="_blank">直播间</a>
+      <a class="btn" href="javascript:alert('工具下载页面正在开发中，敬请期待！')">工具</a>
+    </div>
+
+    <div class="footer">
+      本页面由"九月文化有限电台"的"限制"持续维护与更新
+    </div>
+
+    <div class="testers">
+      测试人员：
+      <span><img src="https://s21.ax1x.com/2025/09/28/pVoEhWD.jpg" alt="九月✨FM" loading="lazy" />九月✨FM</span>
+      <span><img src="https://s21.ax1x.com/2025/09/29/pVonDbj.jpg" alt="CHEN" loading="lazy" />CHEN</span>
+      <span><img src="https://s21.ax1x.com/2025/09/29/pVonsVs.jpg" alt="限制" loading="lazy" />限制</span>
+    </div>
+  </div>
+
+  <div class="device-indicator">
+    <span id="deviceType">设备检测中...</span>
+    <span id="orientationType">方向检测中...</span>
+  </div>
+
+  <!-- 背景音乐 -->
+  <audio id="bgMusic" loop>
+    <!-- 音乐将通过JS动态设置 -->
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>

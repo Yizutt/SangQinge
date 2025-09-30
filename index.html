@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>九月✨FM</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="data.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 音乐控制面板 -->
+  <div class="music-panel" id="musicPanel">
+    <div class="music-control" id="musicControl">
+      <svg class="play-icon" viewBox="0 0 24 24">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+      <svg class="pause-icon" viewBox="0 0 24 24">
+        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+      </svg>
+    </div>
+    
+    <div class="music-info" id="musicInfo">
+      <div class="music-wave">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <span class="music-title">正在加载...</span>
+    </div>
+    
+    <div class="volume-control">
+      <input type="range" id="volumeSlider" min="0" max="100" value="50" class="volume-slider">
+      <span class="volume-value">50%</span>
+    </div>
+    
+    <div class="music-list-toggle" id="musicListToggle">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+      </svg>
+    </div>
+  </div>
+  
+  <!-- 公告通知系统 -->
+  <div class="announcement-system">
+    <!-- 公告图标 - 添加拖动功能 -->
+    <div class="announcement-icon draggable" id="announcementIcon">
+      <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M32 28H38V39C38 40.6569 36.6569 42 35 42C33.3431 42 32 40.6569 32 39V28Z" fill="#e2321d" stroke="#0e0606" stroke-width="1"/>
+        <path d="M29 12H39C40.6569 12 42 13.3431 42 15V25C42 26.6569 40.6569 28 39 28H28" stroke="#0e0606" stroke-width="1" stroke-linecap="square"/>
+        <path d="M14 14H12C8.68629 14 6 16.6863 6 20C6 23.3137 8.68629 26 12 26H14" stroke="#0e0606" stroke-width="1" stroke-linejoin="miter"/>
+        <path d="M14.1984 33C14.0888 33 14 32.9112 14 32.8016L14 6.19844C14 6.08885 14.0888 6 14.1984 6L17.5 6C24.9558 6 31 12.0442 31 19.5C31 26.9558 24.9558 33 17.5 33L14.1984 33Z" fill="#e2321d" stroke="#0e0606" stroke-width="1"/>
+      </svg>
+      <span class="announcement-badge" id="announcementBadge">0</span>
+      <div class="drag-handle">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="8" cy="8" r="1.5" fill="currentColor"/>
+          <circle cx="16" cy="8" r="1.5" fill="currentColor"/>
+          <circle cx="8" cy="16" r="1.5" fill="currentColor"/>
+          <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+        </svg>
+      </div>
+    </div>
+    
+    <!-- 公告面板 -->
+    <div class="announcement-panel" id="announcementPanel">
+      <div class="announcement-header">
+        <h3>系统公告</h3>
+        <button class="close-announcements" id="closeAnnouncements">
+          <svg width="20" height="20" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" fill="none" stroke="#333" stroke-width="4" stroke-linejoin="round"/>
+            <path d="M29.6567 18.3432L18.343 29.6569" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18.3433 18.3432L29.657 29.6569" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="announcement-list" id="announcementList">
+        <!-- 公告内容将通过JS动态生成 -->
+      </div>
+    </div>
+  </div>
+  
+  <!-- 音乐列表 -->
+  <div class="music-list" id="musicList">
+    <div class="music-list-header">
+      <h3>播放列表</h3>
+      <button class="close-list" id="closeList">×</button>
+    </div>
+    <ul class="music-items" id="musicItems">
+      <!-- 音乐列表将通过JS动态生成 -->
+    </ul>
+  </div>
+  
+  <!-- 导航栏 -->
+  <nav class="main-nav">
+    <a href="#home" class="nav-link active" data-page="home">首页</a>
+    <a href="#tools" class="nav-link" data-page="tools">工具箱</a>
+  </nav>
+  
+  <!-- 页面内容容器 -->
+  <div id="page-container">
+    <!-- 页面内容将通过JS动态加载 -->
+  </div>
+
+  <div class="device-indicator">
+    <span id="deviceType">设备检测中...</span>
+    <span id="orientationType">方向检测中...</span>
+  </div>
+
+  <!-- 背景音乐 -->
+  <audio id="bgMusic" loop>
+    <!-- 音乐将通过JS动态设置 -->
+  </audio>
+  
+  <!-- 音乐节奏粒子效果画布 -->
+  <canvas id="particleCanvas"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
